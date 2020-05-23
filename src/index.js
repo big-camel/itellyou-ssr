@@ -70,7 +70,7 @@ app.use(async ({ url , cookies , headers }, res) => {
         context,
     
         // 可自定义 html 模板
-        htmlTemplate: serverHtml,
+        htmlTemplate: isProd ? serverHtml : null,
     
         // 启用流式渲染
         mode: 'string',
