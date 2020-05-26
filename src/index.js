@@ -118,5 +118,5 @@ app.use(async ({ url , cookies , headers }, res) => {
         res.send(html);
     }
 })
-const appPORT = process.env.PORT || 3000
+const appPORT = process.env.PORT || 8088
 app.listen(appPORT, () => console.log(`ITELLYOU SSR listening on port ${appPORT}!`))
