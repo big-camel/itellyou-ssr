@@ -68,8 +68,10 @@ app.use(async ({ url , cookies , headers }, res) => {
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
 
+    let htmlTemplate = isProd ? serverHtml : null
+
     if(isProd && settingData && settingData.footer_scripts){
-        serverHtml = serverHtml.replace("</body>",`${settingData.footer_scripts}</body>`);
+        htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}</body>`);
     }
 
     const context = {
@@ -80,7 +82,7 @@ app.use(async ({ url , cookies , headers }, res) => {
         context,
     
         // 可自定义 html 模板
-        htmlTemplate: isProd ? serverHtml : null,
+        htmlTemplate,
     
         // 启用流式渲染
         mode: 'string',
