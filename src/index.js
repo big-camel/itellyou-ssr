@@ -50,7 +50,7 @@ if(!isProd){
 const extendRequest = request.extend({ timeout:10000 })
 
 const serverRender = require(`${root}/umi.server`)
-const serverHtml = fs.readFileSync(`${root}/index.html`,'utf-8');
+let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
 
 app.use(async ({ url , cookies , headers }, res) => {
     res.setHeader('Content-Type', 'text/html');
@@ -59,8 +59,19 @@ app.use(async ({ url , cookies , headers }, res) => {
     const userResponse = token ? await extendRequest(`${apiUrl}/user/me?token=${token}`) : null
     const userData = userResponse && userResponse.result ? userResponse.data : null
 
+    const settingResponse = await extendRequest(`${apiUrl}/system/setting`)
+    const settingData = settingResponse && settingResponse.result ? settingResponse.data : null
+
+    const linkResponse = await extendRequest(`${apiUrl}/system/link`)
+    const linkData = linkResponse && linkResponse.result ? linkResponse.data.data : null
+
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
+
+    const { site } = settingData || {}
+    if(isProd && site.footer_scripts){
+        serverHtml = serverHtml.replace("</body>",`${site.footer_scripts}</body>`);
+    }
 
     const context = {
     };
@@ -81,6 +92,8 @@ app.use(async ({ url , cookies , headers }, res) => {
         // 扩展 getInitialProps 在服务端渲染中的参数
         getInitialPropsCtx: {
             user:userData,
+            site:settingData,
+            links:linkData,
             isMobile,
             params:{
                 token,
