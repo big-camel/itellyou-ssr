@@ -69,7 +69,7 @@ app.use(async ({ url , cookies , headers }, res) => {
     const isMobile = deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
 
     if(isProd && settingData && settingData.footer_scripts){
-        serverHtml = serverHtml.replace("</body>",`${site.footer_scripts}</body>`);
+        serverHtml = serverHtml.replace("</body>",`${settingData.footer_scripts}</body>`);
     }
 
     const context = {
