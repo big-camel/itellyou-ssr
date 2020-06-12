@@ -85,7 +85,7 @@ app.use(async ({ url , cookies , headers }, res) => {
         htmlTemplate,
     
         // 启用流式渲染
-        mode: 'string',
+        mode: 'stream',
     
         // html 片段静态标记（适用于静态站点生成）
         // staticMarkup: false,
