@@ -16,6 +16,7 @@
         "cross-env": "^7.0.2",
         "express": "^4.17.1",
         "http-proxy-middleware": "^1.0.3",
+        "nodemon": "^2.0.4",
         "umi-request": "^1.2.19"
     }
 }
