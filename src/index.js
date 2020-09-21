@@ -102,8 +102,7 @@ app.use(async ({ url , cookies , headers }, res) => {
                 headers
             }
         },
-    
-        // manifest，正常情况下不需要
+        //manifest
     });
     
     if(error){

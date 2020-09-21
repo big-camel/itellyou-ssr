@@ -5,6 +5,6 @@
     ],
     "watch":[
         "./src",
-        "../itellyou/dist/umi.server"
+        "../itellyou/dist"
     ]
 }
