@@ -67,16 +67,16 @@ app.use(async ({ url , cookies , headers }, res) => {
 
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
+    const isSpider = deviceAgent.match(/(Baiduspider|360Spider|HaosouSpider|Sogou web spider|Sogou Pic Spider|Sogou News Spider|Sogou Video Spider|Sosospider|bingbot|Googlebot|YisouSpider|AdsBot-Google-Mobile|Yahoo)/);
 
-    let htmlTemplate = isProd ? serverHtml : null
+    let htmlTemplate = isProd ? serverHtml : undefined
 
     if(isProd && settingData && settingData.footer_scripts){
         htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}</body>`);
     }
-
     const context = {
     };
-    const { html, error, rootContainer } = await serverRender({
+    const { html, error } = await serverRender({
         // 有需要可带上 query
         path: url,
         context,
@@ -96,6 +96,7 @@ app.use(async ({ url , cookies , headers }, res) => {
             site:settingData,
             links:linkData,
             isMobile,
+            isSpider,
             params:{
                 token,
                 api_url:apiUrl,
@@ -105,7 +106,7 @@ app.use(async ({ url , cookies , headers }, res) => {
         //manifest
     });
     
-    if(error){
+    if(!isProd && error){
         console.error(error)
     }
     // support stream content
