@@ -66,14 +66,15 @@ app.use(async ({ url , cookies , headers }, res) => {
     const linkData = linkResponse && linkResponse.result ? linkResponse.data.data : null
 
     const deviceAgent = headers["user-agent"].toLowerCase();
-    const isMobile = deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
-    const isSpider = deviceAgent.match(/(Baiduspider|360Spider|HaosouSpider|Sogou web spider|Sogou Pic Spider|Sogou News Spider|Sogou Video Spider|Sosospider|bingbot|Googlebot|YisouSpider|AdsBot-Google-Mobile|Yahoo)/);
+    const isMobile = !!deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
+    const isSpider = !!deviceAgent.match(/(Baiduspider|360Spider|HaosouSpider|Sogou web spider|Sogou Pic Spider|Sogou News Spider|Sogou Video Spider|Sosospider|bingbot|Googlebot|YisouSpider|AdsBot-Google-Mobile|Yahoo)/i);
 
     let htmlTemplate = isProd ? serverHtml : undefined
 
     if(isProd && settingData && settingData.footer_scripts){
         htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}</body>`);
     }
+    
     const context = {
     };
     const { html, error } = await serverRender({
