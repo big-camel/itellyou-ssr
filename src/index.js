@@ -85,8 +85,8 @@ app.use(async ({ url , cookies , headers }, res) => {
         // 可自定义 html 模板
         htmlTemplate,
     
-        // 启用流式渲染
-        mode: 'stream',
+        // 此处使用流式渲染的话会导致title/meta标签的内容不正常，甚至混乱，具体原因不知
+        mode: 'string',
     
         // html 片段静态标记（适用于静态站点生成）
         // staticMarkup: false,
