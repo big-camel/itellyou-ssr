@@ -55,15 +55,11 @@ let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
 app.use(async ({ url , cookies , headers }, res) => {
     res.setHeader('Content-Type', 'text/html');
     const token = cookies['token'];
+    const initResponse = await extendRequest(`${apiUrl}/system/init?token=${token}`)
 
-    const userResponse = token ? await extendRequest(`${apiUrl}/user/me?token=${token}`) : null
-    const userData = userResponse && userResponse.result ? userResponse.data : null
-
-    const settingResponse = await extendRequest(`${apiUrl}/system/setting`)
-    const settingData = settingResponse && settingResponse.result ? settingResponse.data : null
-
-    const linkResponse = await extendRequest(`${apiUrl}/system/link`)
-    const linkData = linkResponse && linkResponse.result ? linkResponse.data.data : null
+    const userData = initResponse && initResponse.result ? initResponse.data.user : null
+    const settingData = initResponse && initResponse.result ? initResponse.data.setting : null
+    const linkData = initResponse && initResponse.result && initResponse.data.link ? initResponse.data.link.data : null
 
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = !!deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
