@@ -55,11 +55,15 @@ let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
 app.use(async ({ url , cookies , headers }, res) => {
     res.setHeader('Content-Type', 'text/html');
     const token = cookies['token'];
-    const initResponse = await extendRequest(`${apiUrl}/system/init?token=${token}`)
-
-    const userData = initResponse && initResponse.result ? initResponse.data.user : null
-    const settingData = initResponse && initResponse.result ? initResponse.data.setting : null
-    const linkData = initResponse && initResponse.result && initResponse.data.link ? initResponse.data.link.data : null
+    const initResponse = await extendRequest(`${apiUrl}/system/init?token=${token}`,{
+        timeout:10000,
+        headers
+    })
+    const responseData = initResponse && initResponse.result ? initResponse.data : {}
+    const userData = responseData.user
+    const settingData = responseData.setting
+    const linkData = responseData.link ? responseData.link.data : null
+    const adData = responseData.ad
 
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = !!deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
@@ -89,6 +93,7 @@ app.use(async ({ url , cookies , headers }, res) => {
     
         // 扩展 getInitialProps 在服务端渲染中的参数
         getInitialPropsCtx: {
+            ad:adData,
             user:userData,
             site:settingData,
             links:linkData,
