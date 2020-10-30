@@ -68,7 +68,7 @@ app.use(async ({ url , cookies , headers }, res) => {
     let adScript = ""
     if(adData){
         adScript = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
-        if(adData.type === "baidu") adScript = '<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" >'
+        if(adData.type === "baidu") adScript = '<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer"></script>'
     }
 
     const deviceAgent = headers["user-agent"].toLowerCase();
