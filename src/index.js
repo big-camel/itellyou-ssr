@@ -78,7 +78,7 @@ app.use(async ({ url , cookies , headers }, res) => {
     let htmlTemplate = isProd ? serverHtml : undefined
 
     if(isProd && settingData && settingData.footer_scripts){
-        htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}${adScript}</body>`);
+        htmlTemplate = htmlTemplate.replace(/(.*)<\/body>/g,`${settingData.footer_scripts}${adScript}</body>`);
     }
     
     const context = {
