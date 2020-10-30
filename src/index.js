@@ -54,10 +54,11 @@ let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
 app.use(async ({ url , cookies , headers }, res) => {
     res.setHeader('Content-Type', 'text/html');
     const token = cookies['token'];
-    const initResponse = await request.fetch(`${apiUrl}/system/init?token=${token}`,{
+    const extendRequest = request.extend({
         timeout:10000,
         headers
-    })
+    });
+    const initResponse = await extendRequest(`${apiUrl}/system/init?token=${token}`)
     const responseData = initResponse && initResponse.result ? initResponse.data : {}
     const userData = responseData.user
     const settingData = responseData.setting
