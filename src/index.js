@@ -114,7 +114,7 @@ app.use(async ({ url , cookies , headers }, res) => {
         //manifest
     });
     
-    if(!isProd && error){
+    if(error){
         console.error(error)
     }
     // support stream content
