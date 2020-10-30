@@ -65,6 +65,12 @@ app.use(async ({ url , cookies , headers }, res) => {
     const linkData = responseData.link ? responseData.link.data : null
     const adData = responseData.ad
 
+    let adScript = ""
+    if(adData){
+        adScript = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
+        if(adData.type === "baidu") adScript = '<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" >'
+    }
+
     const deviceAgent = headers["user-agent"].toLowerCase();
     const isMobile = !!deviceAgent.match(/(iphone|ipod|ipad|android|wechat|alipay)/);
     const isSpider = !!deviceAgent.match(/(Baiduspider|360Spider|HaosouSpider|Sogou web spider|Sogou Pic Spider|Sogou News Spider|Sogou Video Spider|Sosospider|bingbot|Googlebot|YisouSpider|AdsBot-Google-Mobile|Yahoo)/i);
@@ -72,7 +78,7 @@ app.use(async ({ url , cookies , headers }, res) => {
     let htmlTemplate = isProd ? serverHtml : undefined
 
     if(isProd && settingData && settingData.footer_scripts){
-        htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}</body>`);
+        htmlTemplate = htmlTemplate.replace("</body>",`${settingData.footer_scripts}${adScript}</body>`);
     }
     
     const context = {
