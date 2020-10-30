@@ -47,7 +47,6 @@ if(!isProd){
 }else{
     app.use(express.static(root,{ index : false }))
 }
-const extendRequest = request.extend({ timeout:10000 })
 
 const serverRender = require(`${root}/umi.server`)
 let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
@@ -55,7 +54,7 @@ let serverHtml = isProd ? fs.readFileSync(`${root}/index.html`,'utf-8') : null;
 app.use(async ({ url , cookies , headers }, res) => {
     res.setHeader('Content-Type', 'text/html');
     const token = cookies['token'];
-    const initResponse = await extendRequest(`${apiUrl}/system/init?token=${token}`,{
+    const initResponse = await request.fetch(`${apiUrl}/system/init?token=${token}`,{
         timeout:10000,
         headers
     })
