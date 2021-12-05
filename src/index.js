@@ -20,7 +20,7 @@ const devUrl = "http://localhost:8000"
 
 //设置编辑器公式 api 转发
 app.use(createProxyMiddleware('/api/(latex|puml|graphviz|flowchart|mermaid)',{
-    target: 'https://g.itellyou.com/',
+    target: 'https://g.aomao.com/',
     changeOrigin: true,
     pathRewrite: { '^/api': '' },
 }))
